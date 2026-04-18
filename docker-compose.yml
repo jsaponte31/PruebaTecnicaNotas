@@ -1,0 +1,20 @@
+services:
+  security-db:
+    image: postgres:16
+    container_name: security-db
+    environment:
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: db_security
+    ports:
+      - "5433:5432" # Conéctate a este puerto para el servicio de Seguridad
+
+  notes-db:
+    image: postgres:16
+    container_name: notes-db
+    environment:
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: db_notes
+    ports:
+      - "5434:5432" # Conéctate a este puerto para el servicio de Notas
