@@ -41,7 +41,7 @@ public static class DependencyInjection
                 };
             });
 
-        // 5. Autorización (Opcional pero recomendado aquí)
+        // 5. Autorización
         services.AddAuthorization();
 
         services.AddSwaggerGen();

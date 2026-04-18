@@ -12,24 +12,33 @@ public class NoteService : INoteService
 
     public NoteService(NotesDbContext context) => _context = context;
 
-    public async Task<IEnumerable<NoteResponseDto>> GetNotesAsync()
+    public async Task<IEnumerable<NoteResponseDto>> GetNotesAsync(string username)
     {
-        return await _context.Notes
+        var notes = await _context.Notes
             .Select(n => new NoteResponseDto(n.Id, n.Title, n.Content, n.CreatedBy, n.CreatedAt))
             .ToListAsync();
+
+        // Registramos el log del GET general
+        await _context.Database.ExecuteSqlRawAsync(
+            "CALL public.sp_record_log({0}, {1}, {2})",
+            "/api/notes", username, "GET_ALL");
+
+        return notes;
     }
 
-    public async Task<NoteResponseDto?> GetNotesByIdAsync(int id)
+    public async Task<NoteResponseDto?> GetNotesByIdAsync(int id, string username)
     {
-        return await _context.Notes
+        var note = await _context.Notes
             .Where(n => n.Id == id)
-            .Select(n => new NoteResponseDto(
-                n.Id,
-                n.Title,
-                n.Content,
-                n.CreatedBy,
-                n.CreatedAt))
+            .Select(n => new NoteResponseDto(n.Id, n.Title, n.Content, n.CreatedBy, n.CreatedAt))
             .FirstOrDefaultAsync();
+
+        // Registramos el log del GET por ID (incluso si no la encuentra, queda el registro del intento)
+        await _context.Database.ExecuteSqlRawAsync(
+            "CALL public.sp_record_log({0}, {1}, {2})",
+            $"/api/notes/{id}", username, "GET_BY_ID");
+
+        return note;
     }
 
     public async Task<bool> CreateNoteAsync(NoteCreateDto dto, string username)
@@ -50,8 +59,8 @@ public class NoteService : INoteService
         {
             //Llamada al Stored Procedure
             await _context.Database.ExecuteSqlRawAsync(
-                "CALL sp_record_log({0}, {1}, {2})",
-                "/api/notes", username, "CREATE_NOTE");
+                "CALL public.sp_record_log({0}, {1}, {2})",
+                "/api/notes", username, "POST");
         }
         return success;
     }
@@ -72,7 +81,7 @@ public class NoteService : INoteService
         {
             await _context.Database.ExecuteSqlRawAsync(
                 "CALL sp_record_log({0}, {1}, {2})",
-                $"/api/notes/{id}", username, "DELETE_NOTE");
+                $"/api/notes/{id}", username, "DELETE");
         }
         return success;
     }

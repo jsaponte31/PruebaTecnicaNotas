@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.AspNetCore.Authentication;
 using NotesService.Infrastructure.Data;
 using NotesService.Domain.Interfaces;
 using NotesService.Api.Services;
+using NotesService.Api.Configuration;
+using NotesService.Api.Middlewares;
 
 namespace NotesService.Api;
 
@@ -12,30 +12,26 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // 1. Base de Datos (PostgreSQL puerto 5434)
+        // 1. Base de Datos
         services.AddDbContext<NotesDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("NotesConnection")));
 
-        // 2. Registro del Servicio de Notas (Interfaz e Implementación)
+        // 2. Registro del Servicio
         services.AddScoped<INoteService, NoteService>();
 
-        // 3. Configuración de Seguridad JWT (Para que [Authorize] funcione)
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
-                };
-            });
+        // 3. HttpClient para llamadas a SecurityService
+        services.AddHttpClient<ITokenValidationService, TokenValidationService>();
+
+        // 4. Servicio de Validación de Tokens contra SecurityService
+        services.AddScoped<ITokenValidationService, TokenValidationService>();
+
+        // 5. Autenticación personalizada que valida contra SecurityService
+        services.AddAuthentication("SecurityServiceAuth")
+            .AddScheme<AuthenticationSchemeOptions, SecurityServiceAuthenticationHandler>(
+                "SecurityServiceAuth", options => { });
 
         services.AddAuthorization();
+        services.AddSwaggerConfiguration();
 
         return services;
     }

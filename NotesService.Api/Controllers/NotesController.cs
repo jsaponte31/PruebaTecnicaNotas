@@ -21,14 +21,26 @@ public class NotesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var notes = await _noteService.GetNotesAsync();
+        // Extraemos el nombre de usuario del claim del Token
+        var username = User.FindFirst(ClaimTypes.Name)?.Value ?? User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(username))
+            return Unauthorized(new { message = "Usuario no identificado en el token" });
+
+        var notes = await _noteService.GetNotesAsync(username);
         return Ok(notes);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var note = await _noteService.GetNotesByIdAsync(id);
+        // Extraemos el nombre de usuario del claim del Token
+        var username = User.FindFirst(ClaimTypes.Name)?.Value ?? User.Identity?.Name;
+
+        if (string.IsNullOrEmpty(username))
+            return Unauthorized(new { message = "Usuario no identificado en el token" });
+
+        var note = await _noteService.GetNotesByIdAsync(id, username);
 
         if (note == null)
             return NotFound(new { message = "La nota no existe o fue eliminada" });
@@ -58,7 +70,7 @@ public class NotesController : ControllerBase
         var username = User.FindFirst(ClaimTypes.Name)?.Value ?? User.Identity?.Name;
 
         if (string.IsNullOrEmpty(username))
-            return Unauthorized();
+            return Unauthorized(new { message = "Usuario no identificado en el token" });
 
         var success = await _noteService.DeleteNoteAsync(id, username);
 

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "SecurityService.Api\\SecurityService.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NotesService.Api\\NotesService.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

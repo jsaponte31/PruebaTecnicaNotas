@@ -11,7 +11,6 @@ public class SecurityDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configuraciones adicionales si son necesarias
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
     }
 }

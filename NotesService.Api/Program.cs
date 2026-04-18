@@ -1,29 +1,17 @@
 using NotesService.Api;
+using NotesService.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Una sola línea para toda la infraestructura
-builder.Services.AddInfrastructure(builder.Configuration);
-
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "Notes Service API v1");
-        options.RoutePrefix = "swagger";
-    });
-}
-
+app.UseSwaggerConfiguration();
 app.UseHttpsRedirection();
-
-// El orden es sagrado para que funcione el [Authorize]
 app.UseAuthentication();
 app.UseAuthorization();
 
