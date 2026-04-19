@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SecurityService.Api.Data;
+using SecurityService.Infrastructure.Data;
 using SecurityService.Api.Authentication;
 using SecurityService.Domain.DTOs;
 using SecurityService.Domain.Entities;

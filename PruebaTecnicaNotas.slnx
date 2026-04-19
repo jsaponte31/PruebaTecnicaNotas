@@ -7,4 +7,5 @@
   <Project Path="NotesService.Infrastructure/NotesService.Infrastructure.csproj" Id="60c44cf0-d9cc-4490-b5bc-e33a41f56d93" />
   <Project Path="SecurityService.Api/SecurityService.Api.csproj" Id="7c0967b7-dcb1-4988-8884-75879c223a6c" />
   <Project Path="SecurityService.Domain/SecurityService.Domain.csproj" Id="f28aea8b-1799-4c07-b211-878f899c7aac" />
+  <Project Path="SecurityService.Infrastructure/SecurityService.Infrastructure.csproj" Id="a558abdb-80fb-489a-adc9-7bc1d5caa9ff" />
 </Solution>

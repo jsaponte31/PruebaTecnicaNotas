@@ -1,30 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SecurityService.Api.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using SecurityService.Api.Authentication;
 using SecurityService.Api.Services;
 using SecurityService.Domain.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace SecurityService.Api;
 
-public static class DependencyInjection
+public static class ServiceExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
-        // 1. Configuración de la Base de Datos
-        var connectionString = configuration.GetConnectionString("SecurityConnection");
-        services.AddDbContext<SecurityDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
-        // 2. Servicios de Lógica de Negocio
+        // Servicios de Lógica de Negocio
         services.AddScoped<IAuthService, AuthService>();
 
-        // 3. Utilidades de Autenticación (JWT)
+        // Utilidades de Autenticación (JWT)
         services.AddScoped<JwtProvider>();
 
-        // 4. Configuración de Autenticación JWT
+        // Configuración de Autenticación JWT
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -41,9 +34,10 @@ public static class DependencyInjection
                 };
             });
 
-        // 5. Autorización
+        // Autorización
         services.AddAuthorization();
 
+        // Swagger
         services.AddSwaggerGen();
 
         return services;

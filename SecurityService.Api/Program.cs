@@ -1,9 +1,11 @@
 using SecurityService.Api;
+using SecurityService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Inyección de dependencias
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration); // Configura DB y HTTP
+builder.Services.AddPresentation(builder.Configuration); // Configura Auth y Swagger
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

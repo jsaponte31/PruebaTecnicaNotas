@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SecurityService.Domain.Entities;
 
-namespace SecurityService.Api.Data;
+namespace SecurityService.Infrastructure.Data;
 
 public class SecurityDbContext : DbContext
 {

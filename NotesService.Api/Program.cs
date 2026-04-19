@@ -1,12 +1,14 @@
 using NotesService.Api;
-using NotesService.Api.Configuration;
+using NotesService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// Inyección de dependencias
+builder.Services.AddInfrastructure(builder.Configuration); // Configura DB y HTTP
+builder.Services.AddPresentation(builder.Configuration); // Configura Auth y Swagger
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -16,12 +18,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Security API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Notes API v1");
         options.RoutePrefix = "swagger";
     });
 }
 
-app.UseSwaggerConfiguration();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
