@@ -40,6 +40,17 @@ public static class ServiceExtensions
         // Swagger
         services.AddSwaggerGen();
 
+        // CORS
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("http://localhost:5173")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+            });
+        });
+
         return services;
     }
 }

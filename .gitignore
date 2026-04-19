@@ -55,3 +55,29 @@ nunit-*.xml
 .vs/
 bin/
 obj/
+
+# Node.js and npm (root level and frontend)
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Frontend - Node.js and dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+frontend/.npm
+
+# Frontend - Environment variables (NEVER commit)
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Frontend - IDE and system files
+frontend/.DS_Store
+frontend/Thumbs.db
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
