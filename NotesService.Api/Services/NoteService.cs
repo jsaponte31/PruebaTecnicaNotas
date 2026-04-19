@@ -57,7 +57,7 @@ public class NoteService : INoteService
 
         if (success)
         {
-            //Llamada al Stored Procedure
+            //Llamada al Stored Procedure al crear nota
             await _context.Database.ExecuteSqlRawAsync(
                 "CALL public.sp_record_log({0}, {1}, {2})",
                 "/api/notes", username, "POST");
@@ -79,6 +79,7 @@ public class NoteService : INoteService
 
         if (success)
         {
+            //Llamada al Stored Procedure al eliminar nota
             await _context.Database.ExecuteSqlRawAsync(
                 "CALL sp_record_log({0}, {1}, {2})",
                 $"/api/notes/{id}", username, "DELETE");
