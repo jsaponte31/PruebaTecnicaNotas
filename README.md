@@ -12,7 +12,7 @@ El sistema permite a los usuarios registrados crear y gestionar sus notas de for
 ### Tecnologías utilizadas
 - **Backend**: C# .NET 10 (ASP.NET Core)
 - **Arquitectura**: Clean Architecture (separación en Api, Domain e Infrastructure)
-- **Base de datos**: SQL Server (con Entity Framework Core + Code First)
+- **Base de datos**: postgreSQL (con Entity Framework Core + Code First)
 - **Autenticación**: JWT Bearer
 - **Contenerización**: Docker + Docker Compose
 - **Otros**: Swagger (OpenAPI), Repository Pattern
@@ -103,10 +103,9 @@ Se utiliza PosgreSQL como base de datos
 La autenticación se basa en JWT Bearer Token.
 Las contraseñas se almacenan hasheadas
 Se siguió Clean Architecture para mantener la separación de responsabilidades y facilitar el mantenimiento y escalabilidad.
-Los servicios son independientes y podrían desplegarse por separado en un entorno productivo.
 Se utilizó Docker Compose para simplificar el entorno de desarrollo (API + Base de datos).
 
 
-Autor: Jhojan Saponte
+Autor: Jhojan Aponte
 Fecha: Abril 2026
 Proyecto: Prueba Técnica - Sistema de Gestión de Notas
