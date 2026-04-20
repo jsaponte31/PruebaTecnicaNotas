@@ -17,6 +17,93 @@
   }
 }
 
+/* Header con info del usuario */
+.app-header {
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--text-h);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info span {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.user-info strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.btn-logout {
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  background-color: transparent;
+  color: var(--accent);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn-logout:hover {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+.btn-logout:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .user-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-logout {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Main content area */
+.app-main {
+  height: calc(100vh - 70px);
+  background-color: var(--bg);
+  overflow: hidden;
+}
+
 .hero {
   position: relative;
 

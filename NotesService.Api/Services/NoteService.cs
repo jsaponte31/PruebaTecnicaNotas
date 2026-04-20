@@ -15,6 +15,7 @@ public class NoteService : INoteService
     public async Task<IEnumerable<NoteResponseDto>> GetNotesAsync(string username)
     {
         var notes = await _context.Notes
+            .Where(n => !n.IsDeleted)
             .Select(n => new NoteResponseDto(n.Id, n.Title, n.Content, n.CreatedBy, n.CreatedAt))
             .ToListAsync();
 
